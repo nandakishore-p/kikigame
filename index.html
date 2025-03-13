@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coop Puzzle Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="phaser.min.js"></script>
+</head>
+
+<body>
+    <h1>Cooperative Puzzle Game</h1>
+    <button onclick="createRoom()">Create Room</button>
+    <input type="text" id="roomCode" placeholder="Enter Room Code">
+    <button onclick="joinRoom()">Join Room</button>
+
+    <!-- ✅ Load Firebase first -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // ✅ Firebase Config (ONLY HERE, NOT in `game.js`)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkWbfiAqXCK-1_GcH2zRseEn6cAopiTss",
+            authDomain: "mycoopgame.firebaseapp.com",
+            databaseURL: "https://mycoopgame-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "mycoopgame",
+            storageBucket: "mycoopgame.appspot.com",
+            messagingSenderId: "641596669399",
+            appId: "1:641596669399:web:266676fb884fcc68111f92"
+        };
+
+        // ✅ Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // ✅ Setup Firebase Database
+        const database = firebase.database();
+
+        // ✅ Room & Player References
+        const roomsRef = database.ref("rooms");
+        const player1Ref = database.ref("players/player1");
+        const player2Ref = database.ref("players/player2");
+
+        // ✅ Test Firebase Connection
+        database.ref(".info/connected").on("value", function(snapshot) {
+            if (snapshot.val() === true) {
+                console.log("✅ Connected to Firebase Realtime Database!");
+            } else {
+                console.error("❌ Not connected to Firebase!");
+            }
+        });
+    </script>
+
+    <!-- ✅ Load game logic AFTER Firebase is initialized -->
+    <script src="game.js"></script>
+</body>
+</html>
